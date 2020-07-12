@@ -1,20 +1,6 @@
 
 <html>
-<style>
-.elementGrid {
-    border:solid;
-    border-width: 0.1;
-}
-#container{
-    margin:auto;
-    display: grid;
-    grid-template-columns: repeat(16,1fr);
-    height: 600px;
-    width: 600px;
-
-}
-
-</style>
+<link rel="stylesheet" type="text/css" href="styles.css">
 
 <body>
     <div id="buttons">
@@ -23,6 +9,7 @@
     <button id="colorSetRandom" class ="btnRandom">Random</button>
     <button id="colorSetShades" class ="btnShades">Shades</button>
     </div>
+
 </body>
 
 
@@ -38,13 +25,14 @@ container.id = "container";
 body.appendChild(container);
 let colorSet="black";
 createGrid(16, colorSet);
+
 function createGrid(squares, colorPaint){
     for(let i = 1; i <= squares**2 ; i++){
         let square = document.createElement("div");
         square.classList.add("elementGrid")
         container.appendChild(square);
         square.style.background = "rgb( 255, 255, 255)";
-        colorChanger(square, colorPaint);
+        square.addEventListener("mouseover", () => colorChanger(square));
     }
     container.style.gridTemplateColumns = `repeat(${squares},1fr)`;
 }
@@ -54,54 +42,40 @@ function deleteGrid(){
 
 }
 
-function colorChanger(square, colorPaint){
+function colorChanger(square){
   
-    if (colorPaint == "black"){
-        square.removeEventListener("mouseover",eventBtnShades);
-        square.removeEventListener("mouseover",eventBtnRandom);
-        square.removeEventListener("mouseover",eventBtnBlack);
-        square.addEventListener("mouseover",eventBtnBlack);
-
-        console.log("hereiam")
+    if (colorSet == "black"){
+        eventBtnBlack(square);
         }
-         else if(colorPaint == "random"){
-                square.removeEventListener("mouseover", eventBtnShades);
-                square.removeEventListener("mouseover", eventBtnRandom);
-                square.removeEventListener("mouseover", eventBtnBlack);
-                square.addEventListener("mouseover", eventBtnRandom);
-
+         else if(colorSet == "random"){
+            eventBtnRandom(square);
                 }
-                else if(colorPaint == "shades"){
-                    square.removeEventListener("mouseover",eventBtnShades);
-                    square.removeEventListener("mouseover",eventBtnRandom);
-                    square.removeEventListener("mouseover",eventBtnBlack);
-
-
-                    square.addEventListener("mouseover", eventBtnShades);
+                else if(colorSet == "shades"){
+                    eventBtnShades(square);
                 }
 
 }
 
-function eventBtnBlack(){
+function eventBtnBlack(square){
    console.log("Hell")
-    this.style.background="rgb(0, 0, 0)";
+    square.style.background="rgb(0, 0, 0)";
 
 }
 
-function eventBtnRandom(){
+function eventBtnRandom(square){
 
     let rComponent = Math.floor(Math.random() * 256);
-        let gComponent = Math.floor(Math.random() * 256);
-        let bComponent = Math.floor(Math.random() * 256);
-        let rgbColor = `rgb(${rComponent},${gComponent},${bComponent})`
-        this.style.background=rgbColor;
+    let gComponent = Math.floor(Math.random() * 256);
+    let bComponent = Math.floor(Math.random() * 256);
+    let rgbColor = `rgb(${rComponent},${gComponent},${bComponent})`
+    square.style.background=rgbColor;
 
 }
 
-function eventBtnShades(){
-    if (this.style.background != "rgb(0, 0, 0)"){
+function eventBtnShades(square){
+    if (square.style.background != "rgb(0, 0, 0)"){
 
-        let rgbString = this.style.background.split(",");
+        let rgbString = square.style.background.split(",");
         rgbString[0] = (0,1,+(rgbString[0].slice(4)));
         rgbString[1] = (1,1,+(rgbString[1]));
         rgbString[2] = (2,1,+(rgbString[2].slice(0,-1)));
@@ -110,7 +84,7 @@ function eventBtnShades(){
         element < 25.5 ? arr[index] = 0: arr[index] -= 25.5;  
         });
         let rgbColor = `rgb(${rgbString[0]},${rgbString[1]},${rgbString[2]})`
-        this.style.background=rgbColor;
+        square.style.background=rgbColor;
     }
 }
 newGridButton.addEventListener("click",()=> {
@@ -119,23 +93,13 @@ newGridButton.addEventListener("click",()=> {
     createGrid(squares, colorSet)})
 colorBlackButton.addEventListener("click", () => {
                 colorSet="black";
-                Array.from(document.querySelectorAll(".elementGrid")).forEach((element) =>{
-                    colorChanger(element, colorSet);
-                })})
+              })
 colorRandomButton.addEventListener("click", () => {
                 colorSet="random";
-                Array.from(document.querySelectorAll(".elementGrid")).forEach((element) =>{
-                    colorChanger(element, colorSet);
-
-                })})
+                })
 colorShadesButton.addEventListener("click", () => {
-                colorSet="shades";
-                Array.from(document.querySelectorAll(".elementGrid")).forEach((element) =>{
-                    colorChanger(element, colorSet);
+                colorSet="shades";          
                 })
                 
-})
-
-
 </script>
 </html>

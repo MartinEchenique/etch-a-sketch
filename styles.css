@@ -1,0 +1,17 @@
+.elementGrid {
+    border:solid;
+    border-width: 0.1;
+}
+#container{
+    margin:auto;
+    display: grid;
+    grid-template-columns: repeat(16,1fr);
+    height: 600px;
+    width: 600px;
+
+}
+#buttons{
+    display: flex;
+    background-color:hsl(0, 10%, 100%);
+    justify-content: center;
+}
