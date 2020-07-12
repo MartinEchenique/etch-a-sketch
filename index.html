@@ -1,0 +1,141 @@
+
+<html>
+<style>
+.elementGrid {
+    border:solid;
+    border-width: 0.1;
+}
+#container{
+    margin:auto;
+    display: grid;
+    grid-template-columns: repeat(16,1fr);
+    height: 600px;
+    width: 600px;
+
+}
+
+</style>
+
+<body>
+    <div id="buttons">
+    <button id="newGrid">New Grid</button>
+    <button id="colorSetBlack" class ="btnBlack">Black</button>
+    <button id="colorSetRandom" class ="btnRandom">Random</button>
+    <button id="colorSetShades" class ="btnShades">Shades</button>
+    </div>
+</body>
+
+
+
+<script>
+const body = document.querySelector("body")
+const container = document.createElement("div");
+const newGridButton = document.querySelector("#newGrid");
+const colorBlackButton = document.querySelector("#colorSetBlack");
+const colorRandomButton = document.querySelector("#colorSetRandom");
+const colorShadesButton = document.querySelector("#colorSetShades");
+container.id = "container";
+body.appendChild(container);
+let colorSet="black";
+createGrid(16, colorSet);
+function createGrid(squares, colorPaint){
+    for(let i = 1; i <= squares**2 ; i++){
+        let square = document.createElement("div");
+        square.classList.add("elementGrid")
+        container.appendChild(square);
+        square.style.background = "rgb( 255, 255, 255)";
+        colorChanger(square, colorPaint);
+    }
+    container.style.gridTemplateColumns = `repeat(${squares},1fr)`;
+}
+
+function deleteGrid(){
+    container.innerHTML = "";
+
+}
+
+function colorChanger(square, colorPaint){
+  
+    if (colorPaint == "black"){
+        square.removeEventListener("mouseover",eventBtnShades);
+        square.removeEventListener("mouseover",eventBtnRandom);
+        square.removeEventListener("mouseover",eventBtnBlack);
+        square.addEventListener("mouseover",eventBtnBlack);
+
+        console.log("hereiam")
+        }
+         else if(colorPaint == "random"){
+                square.removeEventListener("mouseover", eventBtnShades);
+                square.removeEventListener("mouseover", eventBtnRandom);
+                square.removeEventListener("mouseover", eventBtnBlack);
+                square.addEventListener("mouseover", eventBtnRandom);
+
+                }
+                else if(colorPaint == "shades"){
+                    square.removeEventListener("mouseover",eventBtnShades);
+                    square.removeEventListener("mouseover",eventBtnRandom);
+                    square.removeEventListener("mouseover",eventBtnBlack);
+
+
+                    square.addEventListener("mouseover", eventBtnShades);
+                }
+
+}
+
+function eventBtnBlack(){
+   console.log("Hell")
+    this.style.background="rgb(0, 0, 0)";
+
+}
+
+function eventBtnRandom(){
+
+    let rComponent = Math.floor(Math.random() * 256);
+        let gComponent = Math.floor(Math.random() * 256);
+        let bComponent = Math.floor(Math.random() * 256);
+        let rgbColor = `rgb(${rComponent},${gComponent},${bComponent})`
+        this.style.background=rgbColor;
+
+}
+
+function eventBtnShades(){
+    if (this.style.background != "rgb(0, 0, 0)"){
+
+        let rgbString = this.style.background.split(",");
+        rgbString[0] = (0,1,+(rgbString[0].slice(4)));
+        rgbString[1] = (1,1,+(rgbString[1]));
+        rgbString[2] = (2,1,+(rgbString[2].slice(0,-1)));
+        rgbString.forEach((element, index, arr) => {
+                                
+        element < 25.5 ? arr[index] = 0: arr[index] -= 25.5;  
+        });
+        let rgbColor = `rgb(${rgbString[0]},${rgbString[1]},${rgbString[2]})`
+        this.style.background=rgbColor;
+    }
+}
+newGridButton.addEventListener("click",()=> {
+    deleteGrid();
+    squares = +prompt("How Much?")
+    createGrid(squares, colorSet)})
+colorBlackButton.addEventListener("click", () => {
+                colorSet="black";
+                Array.from(document.querySelectorAll(".elementGrid")).forEach((element) =>{
+                    colorChanger(element, colorSet);
+                })})
+colorRandomButton.addEventListener("click", () => {
+                colorSet="random";
+                Array.from(document.querySelectorAll(".elementGrid")).forEach((element) =>{
+                    colorChanger(element, colorSet);
+
+                })})
+colorShadesButton.addEventListener("click", () => {
+                colorSet="shades";
+                Array.from(document.querySelectorAll(".elementGrid")).forEach((element) =>{
+                    colorChanger(element, colorSet);
+                })
+                
+})
+
+
+</script>
+</html>
